@@ -48,7 +48,8 @@ _C.LAST_CONV = 5
 _C.FREEZE_AT = 0
 
 # Freeze the batch norm layers?
-_C.FREEZE_BN = True
+# You have to freeze BN at the moment
+# _C.FREEZE_BN = True
 
 # Use group normalization?
 # Option not yet available
@@ -63,15 +64,21 @@ _C.FREEZE_BN = True
 # ---------------------------------------------------------------------------- #
 _C.immutable(True)
 
+def make_config(config_file, **kwargs):
+    return _C.clone().make_config(config_file, validate_config, **kwargs)
+
 def validate_config(config):
     """
     Check validity of configs
     """
     assert config.TYPE in valid_resnet_types, \
-        '{} is invalid backbone type'.format(config.TYPE)
+        '{} is invalid ResNet type'.format(config.TYPE)
 
     assert config.LAST_CONV in {2, 3, 4, 5}, \
-        'Currently only [2, 3, 4, 5] are accepted values for config.BACKBONE.LAST_CONV'
+        'Currently only [2, 3, 4, 5] are accepted values for LAST_CONV'
 
     assert config.FREEZE_AT in {0, 1, 2, 3, 4, 5}, \
         'FREEZE_AT must be a one of [0, 1, 2, 3, 4, 5]'
+
+    assert config.FREEZE_AT <= config.LAST_CONV, \
+        'FREEZE_AT must be less than or equal to LAST_CONV'
