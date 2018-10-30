@@ -1,5 +1,5 @@
 """
-ResNet configs
+ResNet config system
 """
 import logging
 from ..utils.config_system import ConfigSystem
