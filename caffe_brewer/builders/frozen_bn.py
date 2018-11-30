@@ -2,7 +2,7 @@ from caffe2.python.modeling import initializers
 from caffe2.python.modeling.parameter_info import ParameterTags
 
 
-def add_frozen_bn(model, blob_in, blob_out, dim, inplace=False):
+def add_frozen_bn_ops(model, blob_in, blob_out, dim, inplace=False):
     """
     Affine transformation to replace BN in networks where BN cannot be used.
     (eg. when minibatch size is too small)
