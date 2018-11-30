@@ -32,7 +32,7 @@ def add_layer_ops(
             dim_inner=dim_inner,
             dim_out=dim_out,
             stride=stride if is_first_block else 1,
-            downsample=is_first_block
+            downsample=is_first_block and dim_in != dim_out
         )
 
     return blob_cur

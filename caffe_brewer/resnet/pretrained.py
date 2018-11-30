@@ -71,6 +71,10 @@ def load_pretrained_weights(resnet_type, scope=None, verbosity=0):
             # For conv layers we will be transfering weights directly
             pretrained_weight = torch_weights[weight_name].cpu().data.numpy()
 
+        orig_weight = workspace.FetchBlob(processed_name)
+        assert orig_weight.shape == pretrained_weight.shape, \
+            'Oh no! Something went wrong, torch weights and caffe2 weights are different'
+
         workspace.FeedBlob(processed_name, pretrained_weight)
         count_added += 1
 
