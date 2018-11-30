@@ -3,7 +3,7 @@ Current behavior of stem and maxpool ops are probably less than ideal
 blob_out names are fixed
 """
 from caffe2.python import brew
-from ..builders.frozen_bn import add_frozen_bn
+from ..builders.frozen_bn import add_frozen_bn_ops
 
 
 def add_stem_ops(model, blob_in, dim):
@@ -13,7 +13,7 @@ def add_stem_ops(model, blob_in, dim):
         dim_in=3, dim_out=dim,
         kernel=7, stride=2, pad=3, no_bias=True
     )
-    blob_out = add_frozen_bn(
+    blob_out = add_frozen_bn_ops(
         model,
         blob_in=blob_inner, dim_out='bn1',
         dim=dim, inplace=True
