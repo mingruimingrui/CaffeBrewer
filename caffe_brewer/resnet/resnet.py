@@ -78,7 +78,7 @@ def add_resnet_ops(model, blob_in, config_file=None, **kwargs):
         model.StopGradient(C2, C2)
 
     if config.NO_TOP and config.LAST_CONV == 2:
-        return C2, config
+        return (C2), config
 
     C3 = add_layer_ops(
         model,
@@ -95,7 +95,7 @@ def add_resnet_ops(model, blob_in, config_file=None, **kwargs):
         model.StopGradient(C3, C3)
 
     if config.NO_TOP and config.LAST_CONV == 3:
-        return C2, C3, config
+        return (C2, C3), config
 
     C4 = add_layer_ops(
         model,
@@ -112,7 +112,7 @@ def add_resnet_ops(model, blob_in, config_file=None, **kwargs):
         model.StopGradient(C4, C4)
 
     if config.NO_TOP and config.LAST_CONV == 4:
-        return C2, C3, C4, config
+        return (C2, C3, C4), config
 
     C5 = add_layer_ops(
         model,
@@ -129,7 +129,7 @@ def add_resnet_ops(model, blob_in, config_file=None, **kwargs):
         model.StopGradient(C5, C5)
 
     if config.NO_TOP and config.LAST_CONV == 5:
-        return C2, C3, C4, C5, config
+        return (C2, C3, C4, C5), config
 
     return add_classifier_ops(
         model,
