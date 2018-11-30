@@ -71,3 +71,8 @@ def validate_config(config):
     if not config.MAX_INPUT_LEVEL == implied_max_input_level:
         config.update({'MAX_INPUT_LEVEL': implied_max_input_level})
         logger.info('MAX_INPUT_LEVEL automatically set to {}'.format(implied_max_input_level))
+
+
+def make_config(config_file=None, **kwargs):
+    """ Wrapper around ConfigSystem.make_config """
+    return _C.make_config(config_file, validate_config, **kwargs)
