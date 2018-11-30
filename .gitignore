@@ -108,3 +108,6 @@ venv.bak/
 
 # Depreciated code
 dep/
+
+# Test data
+test/data/**
