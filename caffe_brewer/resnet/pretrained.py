@@ -4,12 +4,13 @@ import torch
 import torchvision
 
 from caffe2.python import core, workspace
+from .config import valid_resnet_types
 from ..utils import conversion
 
 logger = logging.getLogger(__name__)
 
 
-def load_pretrained_weights(type, scope=None, verbosity=0):
+def load_pretrained_weights(resnet_type, scope=None, verbosity=0):
     """
     Load ResNet weights from a pretrained torchvision model and insert said
     weights into ResNet blobs
@@ -17,7 +18,7 @@ def load_pretrained_weights(type, scope=None, verbosity=0):
     Ensure that parameters have already been initialized at this point
 
     Args:
-        type: The type of ResNet
+        resnet_type: The type of ResNet
         scope: The scope that ResNet blobs reside in. If None, core.ScopedName
             will be used
         verbosity: Level of logging to use
@@ -25,11 +26,14 @@ def load_pretrained_weights(type, scope=None, verbosity=0):
             1 - Start and end logged
             2 - Skipped blobs logged
     """
+    assert resnet_type in valid_resnet_types, \
+        '{} resnet_type is invalid'.format(resnet_type)
+
     if verbosity >= 1:
-        logger.info('Loading pretrained weights for {}'.format(type))
+        logger.info('Loading pretrained weights for {}'.format(resnet_type))
 
     # Load a torch model and extract it's weights
-    torch_model_fn = getattr(torchvision.models, 'resnet{}'.format(type))
+    torch_model_fn = getattr(torchvision.models, resnet_type)
     torch_model = torch_model_fn(pretrained=True)
     torch_weights = torch_model.state_dict()
 

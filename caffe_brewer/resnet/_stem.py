@@ -15,7 +15,7 @@ def add_stem_ops(model, blob_in, dim):
     )
     blob_out = add_frozen_bn_ops(
         model,
-        blob_in=blob_inner, dim_out='bn1',
+        blob_in=blob_inner, blob_out='bn1',
         dim=dim, inplace=True
     )
     return brew.relu(model, blob_out, blob_out)

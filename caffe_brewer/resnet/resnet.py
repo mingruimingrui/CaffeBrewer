@@ -65,7 +65,7 @@ def add_resnet_ops(model, blob_in, config_file=None, **kwargs):
 
     C2 = add_layer_ops(
         model,
-        blob_in=C2, blob_out='layer1',
+        blob_in=C2, prefix='layer1',
         dim_in=base_layer_sizes[1],
         dim_inner=base_layer_sizes[1],
         dim_out=base_layer_sizes[2]*expansion,
@@ -78,11 +78,11 @@ def add_resnet_ops(model, blob_in, config_file=None, **kwargs):
         model.StopGradient(C2, C2)
 
     if config.NO_TOP and config.LAST_CONV == 2:
-        return C2
+        return C2, config
 
     C3 = add_layer_ops(
         model,
-        blob_in=C2, blob_out='layer2',
+        blob_in=C2, prefix='layer2',
         dim_in=base_layer_sizes[2]*expansion,
         dim_inner=base_layer_sizes[3],
         dim_out=base_layer_sizes[3]*expansion,
@@ -95,11 +95,11 @@ def add_resnet_ops(model, blob_in, config_file=None, **kwargs):
         model.StopGradient(C3, C3)
 
     if config.NO_TOP and config.LAST_CONV == 3:
-        return C2, C3
+        return C2, C3, config
 
     C4 = add_layer_ops(
         model,
-        blob_in=C3, blob_out='layer3',
+        blob_in=C3, prefix='layer3',
         dim_in=base_layer_sizes[3]*expansion,
         dim_inner=base_layer_sizes[4],
         dim_out=base_layer_sizes[4]*expansion,
@@ -112,11 +112,11 @@ def add_resnet_ops(model, blob_in, config_file=None, **kwargs):
         model.StopGradient(C4, C4)
 
     if config.NO_TOP and config.LAST_CONV == 4:
-        return C2, C3, C4
+        return C2, C3, C4, config
 
     C5 = add_layer_ops(
         model,
-        blob_in=C4, blob_out='layer4',
+        blob_in=C4, prefix='layer4',
         dim_in=base_layer_sizes[4]*expansion,
         dim_inner=base_layer_sizes[5],
         dim_out=base_layer_sizes[5]*expansion,
@@ -129,11 +129,11 @@ def add_resnet_ops(model, blob_in, config_file=None, **kwargs):
         model.StopGradient(C5, C5)
 
     if config.NO_TOP and config.LAST_CONV == 5:
-        return C2, C3, C4, C5
+        return C2, C3, C4, C5, config
 
     return add_classifier_ops(
         model,
         blob_in=C5,
         dim_in=base_layer_sizes[5]*expansion,
         num_classes=config.NUM_CLASSES
-    )
+    ), config
